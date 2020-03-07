@@ -1,3 +1,4 @@
 {
-    "C_Cpp.default.configurationProvider": "b2.catkin_tools"
+    "C_Cpp.default.configurationProvider": "b2.catkin_tools",
+    "cmake.configureOnOpen": true
 }
