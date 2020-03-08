@@ -1,5 +1,5 @@
 """
-The TrackAssociation class subscribes to /spencer/perception/tracked_persons and provides a lookup from any past detection ID to the associated track ID, if any.
+The TrackAssociation class subscribes to /perception/tracked_persons and provides a lookup from any past detection ID to the associated track ID, if any.
 Note that this module cannot look into the future -- if the person tracker is lagging behind the detections, the detection-to-track lookup will not return anything useful for the latest detections!
 You can use the TrackSynchronizer class to buffer incoming ROS messages until person tracks are available for the timestamps of these messages.
 """
@@ -11,12 +11,12 @@ import message_filters
 from tracking_msgs.msg import CompositeDetectedPersons, TrackedPersons
 
 
-""" Subscribes to /spencer/perception/tracked_persons and invokes the registered callback(s). """
+""" Subscribes to /perception/tracked_persons and invokes the registered callback(s). """
 
 
 class TrackSubscriber(object):
     def __init__(self):
-        self.topicName = "/spencer/perception/tracked_persons"
+        self.topicName = "/perception/tracked_persons"
         self.subscriber = rospy.Subscriber(
             self.topicName, TrackedPersons, self.newMessage)
         self.callbacks = []
@@ -30,7 +30,7 @@ class TrackSubscriber(object):
 
 
 """
-Provides a lookup for track IDs, given a detection ID, by monitoring /spencer/perception/tracked_persons and /spencer/perception_internal/fused_person_detections.
+Provides a lookup for track IDs, given a detection ID, by monitoring /perception/tracked_persons and /perception_internal/fused_person_detections.
 This is the main class to be used when associating frame-by-frame detections (e.g. human attributes such as age, gender for a given person detection ID) with longer-lasting person tracks.
 This class is thread-safe.
 
@@ -42,7 +42,7 @@ trackId = trackAssociation.lookupTrackId(someDetectionId)
 
 class TrackAssociation(object):
     """
-    Constructor, automatically subscribes to /spencer/perception/tracked_persons to
+    Constructor, automatically subscribes to /perception/tracked_persons to
     :param maxDetectionsToRemember: Maximum number of detections to remember.
     """
 
@@ -62,8 +62,8 @@ class TrackAssociation(object):
 
     """
     Looks up the track ID with which the given detection ID is associated, if any. The detection ID might be a fused detection ID
-    from the /spencer/perception/detected_persons topic (after merging detections of different detectors), or an original detection ID
-    that directly comes from any of the detectors in the /spencer/perception_internal/ namespace.
+    from the /perception/detected_persons topic (after merging detections of different detectors), or an original detection ID
+    that directly comes from any of the detectors in the /perception_internal/ namespace.
     Can be None if no track is associated with the given detection ID (e.g. due to it being considered as a false alarm).
     """
 
@@ -104,7 +104,7 @@ class TrackAssociation(object):
 
 
 """
-Remembers which original detection IDs were merged into which fused detection IDs by monitoring /spencer/perception_internal/fused_person_detections.
+Remembers which original detection IDs were merged into which fused detection IDs by monitoring /perception_internal/fused_person_detections.
 Used by TrackAssociation. This class is thread-safe.
 """
 
@@ -117,7 +117,7 @@ class FusedDetectionIdMemory(object):
         # used to efficiently remove old detections from the dictionary if max length is exceeded
         self.oldDetections = collections.deque()
 
-        self.fusedDetectionsTopic = "/spencer/perception/detected_persons_composite"
+        self.fusedDetectionsTopic = "/perception/detected_persons_composite"
         self.fusedDetectionSubscriber = rospy.Subscriber(
             self.fusedDetectionsTopic, CompositeDetectedPersons, self.newFusedDetectionsAvailable)
         self.maxOriginalDetectionsToRemember = maxOriginalDetectionsToRemember
@@ -169,7 +169,7 @@ def callback(trackAssociation, humanAttributes):
     # Do something useful with the message...
     # Use trackAssociation.lookupTrackId(detectionId) to look up the track associated with a particular detection (may be None)
 
-human_attribute_sub = message_filters.Subscriber('/spencer/perception_internal/human_attributes/rgbd_front_top', HumanAttributes)
+human_attribute_sub = message_filters.Subscriber('/perception_internal/human_attributes/rgbd_front_top', HumanAttributes)
 track_sync = detected_person_association.TrackSynchronizer(human_attribute_sub, 100)
 track_sync.registerCallback(callback)
 """
