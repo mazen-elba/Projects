@@ -103,9 +103,9 @@ class TrackReceiver(object):
         self.numOdometryTfErrors = 0
 
         self.detectionSubscriber = rospy.Subscriber(
-            "/spencer/perception/detected_persons", DetectedPersons, self.newDetectionsReceived)
+            "/perception/detected_persons", DetectedPersons, self.newDetectionsReceived)
         self.trackSubscriber = rospy.Subscriber(
-            "/spencer/perception/tracked_persons", TrackedPersons, self.newTracksReceived)
+            "/perception/tracked_persons", TrackedPersons, self.newTracksReceived)
         self.odomSubscriber = rospy.Subscriber(
             "/odom", Odometry, self.odometryReceived)
 

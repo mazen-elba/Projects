@@ -42,7 +42,7 @@ class GroupReceiver(TrackReceiver):
         super(GroupReceiver, self).__init__()
         self.firstGroupsReceived = False
         self.groupSubscriber = rospy.Subscriber(
-            "/spencer/perception/tracked_groups", TrackedGroups, self.newGroupsReceived)
+            "/perception/tracked_groups", TrackedGroups, self.newGroupsReceived)
         self.groupCycle = -1
 
     def stop(self):

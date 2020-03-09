@@ -24,7 +24,7 @@ def newMessageReceived(detectedPersons):
 rospy.init_node("detected_persons_to_pose_array")
 
 # Create publisher and subscriber
-inputTopic = rospy.resolve_name("/spencer/perception/detected_persons")
+inputTopic = rospy.resolve_name("/perception/detected_persons")
 outputTopic = rospy.resolve_name("/pose_array")
 
 sub = rospy.Subscriber(inputTopic, DetectedPersons,

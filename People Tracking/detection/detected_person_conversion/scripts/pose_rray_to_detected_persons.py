@@ -45,7 +45,7 @@ modality = rospy.get_param("~modality", "unspecified")
 
 # Create publisher and subscriber
 inputTopic = rospy.resolve_name("/pose_array")
-outputTopic = rospy.resolve_name("/spencer/perception/detected_persons")
+outputTopic = rospy.resolve_name("/perception/detected_persons")
 sub = rospy.Subscriber(inputTopic, PoseArray, newMessageReceived, queue_size=5)
 pub = rospy.Publisher(outputTopic, DetectedPersons, queue_size=5)
 

@@ -66,7 +66,7 @@ useObjectId = rospy.get_param("~use_object_id", False)
 
 # Create publisher and subscriber
 inputTopic = rospy.resolve_name("/position_measurements")
-outputTopic = rospy.resolve_name("/spencer/perception/detected_persons")
+outputTopic = rospy.resolve_name("/perception/detected_persons")
 sub = rospy.Subscriber(inputTopic, PositionMeasurementArray,
                        newMessageReceived, queue_size=5)
 pub = rospy.Publisher(outputTopic, DetectedPersons, queue_size=5)
